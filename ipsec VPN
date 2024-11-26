@@ -1,0 +1,67 @@
+! Router 1 კონფიგურაცია (სათაო ოფისი)
+
+! ინტერფეისების კონფიგურაცია
+interface GigabitEthernet0/0
+ description WAN Interface
+ ip address 203.0.113.1 255.255.255.0
+ 
+
+interface GigabitEthernet0/1
+ description LAN Interface
+ ip address 192.168.1.1 255.255.255.0
+
+! VPN კონფიგურაცია (მოკლედ)
+crypto isakmp policy 10
+ encryption aes 256
+ authentication pre-share
+ group 5
+crypto isakmp key StrongKey123! address 203.0.113.2
+crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+crypto map KAKHA-MAP 10 ipsec-isakmp 
+ set peer 203.0.113.2
+ set transform-set TS
+ match address VPN-TRAFFIC
+
+! აქსეს-ლისტი VPN ტრაფიკისთვის
+access-list 110 permit ip 192.168.1.0 0.0.0.255 192.168.2.0 0.0.0.255
+
+! მარშრუტიზაცია
+ip route 192.168.2.0 255.255.255.0 203.0.113.2
+
+interface gi 0/0/0
+
+ crypto map KAKHA-MAP
+
+! Router 2 კონფიგურაცია (ფილიალი)
+
+! ინტერფეისების კონფიგურაცია
+interface GigabitEthernet0/0
+ description WAN Interface
+ ip address 203.0.113.2 255.255.255.0
+
+
+interface GigabitEthernet0/1
+ description LAN Interface
+ ip address 192.168.2.1 255.255.255.0
+
+! VPN კონფიგურაცია (მოკლედ)
+crypto isakmp policy 10
+ encryption aes 256
+ authentication pre-share
+ group 5
+crypto isakmp key StrongKey123! address 203.0.113.1
+crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+crypto map KAKHA-MAP 10 ipsec-isakmp 
+ set peer 203.0.113.1
+ set transform-set TS
+ match address VPN-TRAFFIC
+
+! აქსეს-ლისტი VPN ტრაფიკისთვის
+access-list 110 permit ip 192.168.2.0 0.0.0.255 192.168.1.0 0.0.0.255
+
+! მარშრუტიზაცია
+ip route 192.168.1.0 255.255.255.0 203.0.113.1
+
+int gi 0/0/0
+
+ crypto map KAKHA-MAP
