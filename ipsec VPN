@@ -65,3 +65,45 @@ ip route 192.168.1.0 255.255.255.0 203.0.113.1
 int gi 0/0/0
 
  crypto map KAKHA-MAP
+
+
+
+
+############################################################
+
+რამდენიმე გზა არსებობს უსაფრთხოების გასაუმჯობესებლად:
+
+ISAKMP Policy გაუმჯობესება:
+
+უფრო რთული pre-shared key გამოყენება
+Longer key length (AES 256-ის ნაცვლად AES 256 + SHA-256)
+IKE ვერსია 2-ის გამოყენება (უფრო უსაფრთხო)
+
+
+IPsec კონფიგურაცია:
+
+Perfect Forward Secrecy (PFS) დამატება
+ვადა/ხანგრძლივობის შეზღუდვა გასაღებებზე
+ძლიერი crypto transform-set
+
+
+Access Control გაფართოება:
+
+Reflexive access-lists გამოყენება
+Stateful packet inspection
+Rate limiting VPN ტრაფიკზე
+
+
+Additional Hardening:
+
+IPsec Dead Peer Detection
+Split tunneling აკრძალვა
+Logging და monitoring გაძლიერება
+NAT traversal მხარდაჭერა
+
+
+Authentication გაუმჯობესება:
+
+Digital certificates გამოყენება
+Multi-factor authentication
+RADIUS/TACACS+ ინტეგრაცია
